@@ -22,6 +22,7 @@
 #include "play_queue_f32.h"
 #include "record_queue_f32.h"
 #include "filter_moog_f32.h"
+#include "filter_moog.h"
 #include "synth_pinknoise_f32.h"
 #include "synth_sine_f32.h"
 #include "synth_waveform_F32.h"
