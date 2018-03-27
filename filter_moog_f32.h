@@ -28,7 +28,7 @@
 #define filter_moog_f32_h_
 
 #include "Arduino.h"
-#include "AudioStream_f32.h"
+#include "AudioStream_F32.h"
 #include "utility/dspinst.h"
 #include "arm_math.h"
 
