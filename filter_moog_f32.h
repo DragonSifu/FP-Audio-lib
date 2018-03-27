@@ -60,12 +60,12 @@ public:
 	y_d_1 = 0;
 	}
 	void frequency(float freq,bool setf=true) {
+		if(setf)
+			basef=freq;
 		if (freq < 20.0) freq = 20.0;
 		else if (freq > AUDIO_SAMPLE_RATE_EXACT/2.5) freq = AUDIO_SAMPLE_RATE_EXACT/2.5;
 	    g = 1 - expf(-2 * tanf(2 * M_PI * freq/(2 * AUDIO_SAMPLE_RATE_EXACT)));
 //		Serial.println(freq);
-		if(setf)
-			basef=freq;
 	}
 	void resonance(float qi) {
 		if (qi < 0.7) qi = 0.7;
