@@ -52,7 +52,7 @@ public:
 	frequency(1000);
 	resonance(1);
 	drive(1);
-	octave(1);
+	octaveControl(1);
 	y_a = 0;
 	y_b = 0;
 	y_c = 0;
@@ -72,7 +72,7 @@ public:
 		else if (qi > 5.0) qi = 5.0;
 		q=qi;
 	}
-	void octave(float n) {
+	void octaveControl(float n) {
 		if (n < 0.0) n = 0.0;
 		else if (n > 6.9999) n = 6.9999;
 		oct=n;
