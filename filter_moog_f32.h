@@ -28,7 +28,7 @@
 #define filter_moog_f32_h_
 
 #include "Arduino.h"
-#include "AudioStream_f32.h"
+#include "AudioStream_F32.h"
 #include "utility/dspinst.h"
 #include "arm_math.h"
 
@@ -52,7 +52,7 @@ public:
 	frequency(1000);
 	resonance(1);
 	drive(1);
-	octave(1);
+	octaveControl(1);
 	y_a = 0;
 	y_b = 0;
 	y_c = 0;
@@ -60,19 +60,19 @@ public:
 	y_d_1 = 0;
 	}
 	void frequency(float freq,bool setf=true) {
+		if(setf)
+			basef=freq;
 		if (freq < 20.0) freq = 20.0;
 		else if (freq > AUDIO_SAMPLE_RATE_EXACT/2.5) freq = AUDIO_SAMPLE_RATE_EXACT/2.5;
 	    g = 1 - expf(-2 * tanf(2 * M_PI * freq/(2 * AUDIO_SAMPLE_RATE_EXACT)));
 //		Serial.println(freq);
-		if(setf)
-			basef=freq;
 	}
 	void resonance(float qi) {
 		if (qi < 0.7) qi = 0.7;
 		else if (qi > 5.0) qi = 5.0;
 		q=qi;
 	}
-	void octave(float n) {
+	void octaveControl(float n) {
 		if (n < 0.0) n = 0.0;
 		else if (n > 6.9999) n = 6.9999;
 		oct=n;

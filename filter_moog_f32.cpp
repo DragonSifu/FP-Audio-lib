@@ -27,18 +27,26 @@
 #include "filter_moog_f32.h"
 
 
+__inline__ float tanh_fast(float x)
+{
+  // rational tanh aproximation
+  float x2 = x * x;
+  float a = x * (135135.0f + x2 * (17325.0f + x2 * (378.0f + x2)));
+  float b = 135135.0f + x2 * (62370.0f + x2 * (3150.0f + x2 * 28.0f));
+  return a / b;
+}
 
 #if defined(KINETISK)
 
 void AudioFilterMoog_F32::update_fixed(const float *in,float *lp)
 {
 	for (int i = 0; i < 2*AUDIO_BLOCK_SAMPLES; i++) {
-		float cs = tanhf(in[i/2] * driv);
-		y_a = y_a + g * (tanhf(cs - q * ((y_d_1 + y_d)/2) - tanhf(y_a)));
-		y_b = y_b + g * (tanhf(y_a) - tanhf(y_b));
-		y_c = y_c + g * (tanhf(y_b) - tanhf(y_c));
+		float cs = tanh_fast(in[i/2] * driv);
+		y_a = y_a + g * (tanh_fast(cs - q * ((y_d_1 + y_d)/2) - tanh_fast(y_a)));
+		y_b = y_b + g * (tanh_fast(y_a) - tanh_fast(y_b));
+		y_c = y_c + g * (tanh_fast(y_b) - tanh_fast(y_c));
 		y_d_1 = y_d;
-		y_d = y_d + g * (tanhf(y_c) - tanhf(y_d));
+		y_d = y_d + g * (tanh_fast(y_c) - tanh_fast(y_d));
 		lp[i/2]  = y_d;
 	}
 }
@@ -50,12 +58,12 @@ void AudioFilterMoog_F32::update_variable(const float *in,const float *ctl, floa
 		float nf=basef*(exp2f(ctl[0/over]*oct));
 		frequency(nf,false);
 	for (int i = 0; i < 2*AUDIO_BLOCK_SAMPLES; i++) {
-		float cs = tanhf(in[i/over] * driv);
-		y_a = y_a + g * (tanhf(cs - q * ((y_d_1 + y_d)/2) - tanhf(y_a)));
-		y_b = y_b + g * (tanhf(y_a) - tanhf(y_b));
-		y_c = y_c + g * (tanhf(y_b) - tanhf(y_c));
+		float cs = tanh_fast(in[i/over] * driv);
+		y_a = y_a + g * (tanh_fast(cs - q * ((y_d_1 + y_d)/2) - tanh_fast(y_a)));
+		y_b = y_b + g * (tanh_fast(y_a) - tanh_fast(y_b));
+		y_c = y_c + g * (tanh_fast(y_b) - tanh_fast(y_c));
 		y_d_1 = y_d;
-		y_d = y_d + g * (tanhf(y_c) - tanhf(y_d));
+		y_d = y_d + g * (tanh_fast(y_c) - tanh_fast(y_d));
 		lp[i/over]  = y_d;
 	}
 }
